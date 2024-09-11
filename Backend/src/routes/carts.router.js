@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import { Router } from "express";
 
 const router = Router();
 
@@ -6,15 +6,15 @@ const router = Router();
 let carts = [];
 
 //Obtener todos los carts
-router.get('/', (req, res) => {
-    res.json(carts);
+router.get("/", (req, res) => {
+  res.json(carts);
 });
 
 //Crear nuevo carts
-router.post('/', (req, res) => {
-    const newCarts = req.body;
-    carts.push(newCarts);
-    res.status(201).json(newCarts);
-} )
+router.post("/", (req, res) => {
+  const newCarts = req.body;
+  carts.push(newCarts);
+  res.status(201).json(newCarts);
+});
 
 export default router;
