@@ -1,0 +1,14 @@
+{{! Muestra todos los productos}}
+<h1>Listado de productos</h1>
+<div class="d-flex mt-5">
+  {{#each products}}
+    <div class="card border-dark m-1" style="width: 10rem;">
+      <div class="card-body">
+        <h5 class="card-title">{{this.title}}</h5>
+        <p class="card-text">{{this.description}}</p>
+        <p class="card-text">{{this.price}}</p>
+      </div>
+    </div>
+  {{/each}}
+
+</div>
