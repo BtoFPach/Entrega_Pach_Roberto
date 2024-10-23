@@ -1,0 +1,37 @@
+<h2>Agregar producto</h2>
+{{! Formulario para agregar un producto }}
+<div class="d-flex p-5">
+
+  <form class="d-flex flex-column gap-2 m-3" id="addForm">
+    <input id="title" type="text" name="title" placeholder="Nombre del producto" />
+    <input id="description" type="text" name="description" placeholder="Descripción del producto" />
+    <input id="code" type="text" name="code" placeholder="Codigo de producto" />
+    <input id="price" type="text" name="price" placeholder="Precio del producto" />
+    <input id="stock" type="text" name="stock" placeholder="Stock del producto" />
+    <input id="category" type="text" name="category" placeholder="Categoria del producto" />
+
+    <button type="submit">Agregar producto</button>
+  </form>
+
+</div>
+
+{{! Mostramos todos los productos que recibimos }}
+<div>
+  <h2>Listado de productos</h2>
+  <div class="d-flex" id="productsList">
+    {{#each products}}
+    <div class="card border-dark" style="width: 10em;">
+      <div class="card-body">
+        <h5 class="card-title">{{this.title}}</h5>
+        <p class="card-text">{{this.description}}</p>
+        <p class="card-text">{{this.price}}</p>
+        <button onclick="delteProduct({{this._id}})" type="button" class="btn btn-outline-secondary">Eliminar</button>
+      </div>
+    </div>
+    {{/each}}
+
+  </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

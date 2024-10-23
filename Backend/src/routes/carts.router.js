@@ -1,9 +1,7 @@
 import { Router } from "express";
-import cartsManager from "../cartsManager.js";
-import productsManager from "../productsManager.js";
 
 const router = Router();
-
+/*
 router.get("/", async (req, res) => {
   try {
     console.log("hola")
@@ -56,6 +54,6 @@ router.post("/:cid/product/:pid", async (req, res) => {
     res.status(500).json({ status: "Erro", msg: "Error interno del servidor" });
   }
 });
-
+*/
 export default router;
 

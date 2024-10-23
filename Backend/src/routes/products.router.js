@@ -1,97 +1,93 @@
 import { Router } from "express";
-import productsManager from "../productsManager.js";
+import productsModel from "../models/products.models.js";
 
 const router = Router();
 
 
 //Obtener todos los productos
-router.get("/", async (req, res) => {
+
+router.get('/', async (req, res) => {
   try {
-    const { limit } = req.query;
-    const products = await productsManager.getProducts(limit);
-    res.status(200).json({ status: "success", products });
+      //buscamos todos los usuarios a travez del metodo find, gracias a mongoose
+      const products = await productsModel.find({})
+      console.log('productos :', products);
+      res.send(products)
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ status: "Erro", msg: "Error interno del servidor" });
+      res.status(500).send(error);
   }
 });
 
 //Crea un producto
+
 router.post("/", async (req, res) => {
   try {
-    const { title, description, code, price, stock, category, thumbnails } =
-      req.body;
-    if (!title || !description || !code || !price || !stock || !category) {
-      return res
-        .status(400)
-        .json({ status: "Error", msg: "Todos los parametos son requeridos exepto thumbnails" });
-    }
-    const product = await productsManager.addProduct({
-      title,
-      description,
-      code,
-      price,
-      stock,
-      category,
-      thumbnails,
-    });
-
-    res.status(201).json({ status: "success", product });
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ status: "Erro", msg: "Error interno del servidor" });
-  }
+    //utilizamos el modelo(schema) para la creacion del usuario
+    const product = new productsModel(req.body);
+    console.log('Info del body :', req.body);
+    
+    console.log('El producto es :', product);
+    //aqui salvamos estudiante en BD
+    await product.save();
+    res.status(201).send(product);
+} catch (error) {
+    res.status(400).send(error);
+}
 });
+
 
 // Obtiene un producto por id
 
-router.get("/:pid", async (req, res) => {
+router.get('/:id', async (req, res) => {
   try {
-    const { pid } = req.params;
-    const body = req.body;
-    const product = await productsManager.updateProduct(Number(pid), body);
-    if (!product)
-      return res
-        .status(404)
-        .json({ status: "Error", msg: "Producto no encontrado" });
-
-    res.status(200).json({ status: "success", product });
+      //metodo de findById
+      const product = await productsModel.findById(req.params.id);
+      //en caso de no encontrar usuario perzonalidamos mensaje
+      if(!product){
+          return res.status(404).send({
+              message: 'Producto no encontrado'
+          })
+      }
+      res.send(product);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ status: "Erro", msg: "Error interno del servidor" });
+      res.status(500).send({
+          message: 'Error al buscar el producto',
+          error
+      })
   }
 });
 
 // Modifica un producto por id
-router.put("/:pid", async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
-    const { pid } = req.params;
-    const body = req.body;
-    const product = await productsManager.updateProduct(Number(pid), body);
-    if (!product)
-      return res
-        .status(404)
-        .json({ status: "Error", msg: "Producto no encontrado" });
-
-    res.status(200).json({ status: "success", product });
+      //metodo de moongose de buscarr y actualizar por ID
+      const product = await productsModel.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators:true});
+      //en caso de no encontrar usuario perzonalidamos mensaje
+      if(!product){
+          return res.status(404).send({
+              message: 'No se encontro el producto'
+          })
+      }
+      res.send(product);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ status: "Erro", msg: "Error interno del servidor" });
+      res.status(400).send(error);
   }
 });
 
 // Borra un producto por id
-router.delete("/:pid", async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    const { pid } = req.params;
-    const product = await productsManager.deleteProduct(Number(pid));
-    if (!product) return res.status(404).json({ status: "Error", msg: "Producto no encontrado" });
-
-    res.status(200).json({ status: "success", msg: `El producto con el id ${pid} fue eliminado` });
+      const product = await productsModel.findByIdAndDelete(req.params.id);
+      //en caso de no encontrar usuario perzonalidamos mensaje
+      if(!product){
+          return res.status(404).send({
+              message: 'No se encontro el producto',
+              error
+          });
+      }
+      res.send(product)
   } catch (error) {
-    console.log(error);
-    res.status(500).json({ status: "Erro", msg: "Error interno del servidor" });
+      res.status(400).send(error);
   }
-});
+})
 
 export default router;
