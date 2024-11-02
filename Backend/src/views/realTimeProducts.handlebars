@@ -18,14 +18,14 @@
 {{! Mostramos todos los productos que recibimos }}
 <div>
   <h2>Listado de productos</h2>
-  <div class="d-flex" id="productsList">
+  <div class="row row-cols-1 row-cols-md-6" id="productsList">
     {{#each products}}
-    <div class="card border-dark" style="width: 10em;">
+    <div class="card border-dark m-1" style="">
       <div class="card-body">
         <h5 class="card-title">{{this.title}}</h5>
         <p class="card-text">{{this.description}}</p>
         <p class="card-text">{{this.price}}</p>
-        <button onclick="delteProduct({{this._id}})" type="button" class="btn btn-outline-secondary">Eliminar</button>
+        <button onclick="delteProduct(`{{this._id}}`)" type="button" class="btn btn-outline-secondary">Eliminar</button>
       </div>
     </div>
     {{/each}}

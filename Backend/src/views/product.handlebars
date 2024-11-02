@@ -1,0 +1,18 @@
+{{! Muestra un producto}}
+<h1>Producto</h1>
+<div class="d-flex p-5">
+
+  <form class="d-flex flex-column gap-2 m-3" id="addForm">
+    <input id="title" type="text" name="title" value="{{product.title}}" />
+    <input id="description" type="text" name="description" value="{{product.description}}" />
+    <input id="code" type="text" name="code" value="{{product.code}}" />
+    <input id="price" type="text" name="price" value="{{product.price}}" />
+    <input id="stock" type="text" name="stock" value="{{product.stock}}" />
+    <input id="category" type="text" name="category" value="{{product.category}}" />
+
+    <button  onclick="upDateProduct(`{{product._id}}`)" type="button"  class="btn btn-primary ">Modificar</button>
+    <button onclick="deleteProduct(`{{product._id}}`)" type="button"  class="btn btn-primary ">Eliminar</button>  </form>
+
+</div>
+
+<script src="/js/product.js"></script>

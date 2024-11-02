@@ -38,7 +38,7 @@ addForm.addEventListener("submit", async (e) => {
     socket.emit("addProduct", "nuevo producto");
   }
 
-  addForm.reset();
+  //addForm.reset();
 });
 
 // Eliminar productos
@@ -56,7 +56,7 @@ const delteProduct = async(id) => {
   if (response?.ok) {
     socket.emit("deleteProduct", "producto eliminado");
   }
-};
+}
 
 // Recibir los productos
 
@@ -65,16 +65,16 @@ socket.on("products", (data) => {
   console.log(data);
   productsList.innerHTML = "";
   data.forEach((product) => {
-    console.log(product.id)
-    const card = document.createElement("div");
-    card.classList.add("card", "border-dark");
-    card.style.width = "10rem";
+    let id = product._id
+    console.log(id)
     card.innerHTML = `
+     <div class="card border-dark m-1" style="">
         <div class="card-body">
           <h5 class="card-title">${product.title}</h5>
           <p class="card-text">${product.description}</p>
           <p class="card-text">${product.price}</p>
-           <button  onclick="delteProduct(${product.id})" type="button" class="btn btn-outline-secondary">Eliminar</button>
+           <button  onclick="delteProduct(\`${id}\`)" type="button" class="btn btn-outline-secondary">Eliminar</button>
+        </div>
         </div>
       `;
 

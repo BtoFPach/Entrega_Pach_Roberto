@@ -8,7 +8,7 @@ const router = Router();
 
 router.get('/', async (req, res) => {
   try {
-      //buscamos todos los usuarios a travez del metodo find, gracias a mongoose
+      //buscamos todos los productos a travez del metodo find, gracias a mongoose
       const products = await productsModel.find({})
       console.log('productos :', products);
       res.send(products)
@@ -21,12 +21,12 @@ router.get('/', async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    //utilizamos el modelo(schema) para la creacion del usuario
+    //utilizamos el modelo(schema) para la creacion del producto
     const product = new productsModel(req.body);
     console.log('Info del body :', req.body);
     
     console.log('El producto es :', product);
-    //aqui salvamos estudiante en BD
+    //aqui salvamos el producto en BD
     await product.save();
     res.status(201).send(product);
 } catch (error) {
@@ -41,7 +41,7 @@ router.get('/:id', async (req, res) => {
   try {
       //metodo de findById
       const product = await productsModel.findById(req.params.id);
-      //en caso de no encontrar usuario perzonalidamos mensaje
+      //en caso de no encontrar el producto
       if(!product){
           return res.status(404).send({
               message: 'Producto no encontrado'
@@ -59,9 +59,9 @@ router.get('/:id', async (req, res) => {
 // Modifica un producto por id
 router.put('/:id', async (req, res) => {
   try {
-      //metodo de moongose de buscarr y actualizar por ID
+      //metodo de moongose de buscar y actualizar por ID
       const product = await productsModel.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators:true});
-      //en caso de no encontrar usuario perzonalidamos mensaje
+      //en caso de no encontrar el producto
       if(!product){
           return res.status(404).send({
               message: 'No se encontro el producto'
@@ -77,7 +77,7 @@ router.put('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
       const product = await productsModel.findByIdAndDelete(req.params.id);
-      //en caso de no encontrar usuario perzonalidamos mensaje
+      //en caso de no encontrar el producto
       if(!product){
           return res.status(404).send({
               message: 'No se encontro el producto',

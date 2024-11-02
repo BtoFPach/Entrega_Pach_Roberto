@@ -1,14 +1,31 @@
 {{! Muestra todos los productos}}
 <h1>Listado de productos</h1>
-<div class="d-flex mt-5">
-  {{#each products}}
-    <div class="card border-dark m-1" style="width: 10rem;">
-      <div class="card-body">
-        <h5 class="card-title">{{this.title}}</h5>
-        <p class="card-text">{{this.description}}</p>
-        <p class="card-text">{{this.price}}</p>
-      </div>
+<div class="row row-cols-1 row-cols-md-6">
+  {{#if isValid}}
+  {{#each docs}}
+  <div class="card border-dark m-1 mb-3 text-center" style="width: auto; height auto ">
+    <div class="card-body">
+      <h5 class="card-title">{{this.title}}</h5>
+      <p class="card-text">{{this.description}}</p>
+      <p class="card-text">{{this.price}}</p>
+      <a href="/product/{{this.id}}" class="btn btn-primary ">Ver producto</a>
+      <a href="#" class="btn btn-primary">Agragar al carrito</a>
     </div>
-  {{/each}}
+  </div>
 
+  {{/each}}
 </div>
+<div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+  <div class="btn-group me-2" role="group" aria-label="First group"></div>
+  {{#if hasPrevPage}}
+  <a href={{this.prevLink}} class="btn btn-outline-secondary">anterior </a>
+  {{/if}}
+  <div class="btn btn-outline-secondary">{{this.page}}</div>
+  {{#if hasNextPage}}
+  <a href={{this.nextLink}} class="btn btn-outline-secondary"> siguiente</a>
+  {{/if}}
+</div>
+</div>
+{{else}}
+<h1>No hay productos para mostrar</h1>
+{{/if}}
