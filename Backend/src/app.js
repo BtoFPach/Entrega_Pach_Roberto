@@ -7,6 +7,7 @@ import { Server } from "socket.io";
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
 import viewsRouter from "./routes/views.router.js";
+import userRouter from "./routes/user.router.js"
 
 //Importamos los mongoose
 import mongoose from "mongoose";
@@ -42,6 +43,9 @@ app.use("/api/products", productsRouter);
 app.use("/api/carts", cartsRouter);
 
 app.use("/", viewsRouter);
+
+app.use('/api/sessions', userRouter);
+a
 
 // Configuramos socket
 export const io = new Server(httpServer);
