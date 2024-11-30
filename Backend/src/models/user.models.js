@@ -1,5 +1,6 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcrypt');
+import mongoose from "mongoose";
+
+const userCollection = "user"
 
 const userSchema = new mongoose.Schema({
   first_name: String,
@@ -17,6 +18,6 @@ userSchema.pre('save', async function (next) {
     next();
 })
 
-const UserModel = mongoose.model('User',userSchema);
+const UserModel = mongoose.model(userCollection,userSchema);
 
 export default UserModel;

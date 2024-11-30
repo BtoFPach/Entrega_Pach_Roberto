@@ -1,6 +1,7 @@
 import express from 'express';
+import jwt from 'jsonwebtoken';
 import UserService from '../models/user.models.js';
-import {isValidPassword, generateToken, verifyToken } from '../utils.js';
+import {isValidPassword, authorization, passportCall  } from '../utils.js';
 
 const router = express.Router();
 
@@ -24,16 +25,26 @@ router.post('/login', async (req, res) => {
         }
 
         if(!isValidPassword(user, password)){
-            return res.status(400).json({error: 'Credenciales inválidas'});
-        }
+            let token = jwt.sign({ email, password,role:"user" }, "coderSecret", { expiresIn: "24h" });
 
-        const token = generateToken({userId: user._id, role: user.role});
-        res.cookie('currentUser', token, { httpOnly: true});
-        res.json({message: 'Inicio de sesión exitoso'});
+      res.cookie('tokenCookie', token, {maxAge: 60 * 60 * 1000, httpOnly: true})
+      .send({ message: "Logged in successfully"});
+        }
 
     }catch (error){
         res.status(500).json({error: error.message});
     }
+})
+
+
+//Nueva ruta protegida
+router.get('/current', passportCall('jwt'), authorization('user'), (req, res) => { 
+    res.send(req.user);
+})
+
+//Nueva ruta protegida
+router.get('/admin', passportCall('jwt'), authorization('admin'), (req, res) => { 
+    res.send(req.user);
 })
 
 
