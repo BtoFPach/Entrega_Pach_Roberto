@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import createHash from "../utils.js";
 
 const userCollection = "user"
 
