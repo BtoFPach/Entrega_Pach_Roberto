@@ -1,7 +1,7 @@
 import express from 'express';
 import jwt from 'jsonwebtoken';
 import UserService from '../models/user.models.js';
-import {isValidPassword, authorization, passportCall } from '../utils.js';
+import {authorization, passportCall } from '../utils/pasaport.js';
 
 const router = express.Router();
 

@@ -47,8 +47,7 @@ const httpServer = app.listen(port, () => {
   console.log("el servidor se encuetra escuchando");
 });
 
-mongoose
-  .connect(
+mongoose.connect(
     "mongodb+srv://btofpach:3202coder@coder.wy2fs.mongodb.net/?retryWrites=true&w=majority&appName=coder"
   )
   .then(() => console.log("Conectado a base de datos MongoDb Atlas"))
