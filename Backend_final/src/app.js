@@ -2,10 +2,10 @@ import express from "express";
 import envs from "./config/envs.config.js";
 // import handlabars from "express-handlebars";
 import __dirname from "./utils.js";
-import mongoose from "mongoose";
-// import passport from 'passport';
-// import cookieParser from 'cookie-parser';
-// import initializePassport from './config/passport.config.js';
+import connectDB from "./config/db.js";
+import passport from 'passport';
+import cookieParser from 'cookie-parser';
+import initializePassport from './config/passport.confg.js';
 
 import productsRouter from "./routes/products.router.js";
 import cartsRouter from "./routes/carts.router.js";
@@ -13,7 +13,7 @@ import viewsRouter from "./routes/views.router.js";
 import sessionRouter from "./routes/session.router.js";
 
 const app = express();
-// initializePassport();
+initializePassport();
 
 // app.engine("handlebars", handlabars.engine());
 // app.set("views", __dirname + "/views");
@@ -30,8 +30,8 @@ app.use("/api/carts", cartsRouter);
 app.use("/", viewsRouter);
 app.use("/api/session", sessionRouter);
 
-// app.use(cookieParser());
-// app.use(passport.initialize());
+app.use(cookieParser());
+app.use(passport.initialize());
 
 //Inicializar el servidor
 const port = envs.PORT;
@@ -41,10 +41,5 @@ const httpServer = app.listen(port, () => {
 });
 
 const url = envs.MONGO_URL;
-console.log(envs.MONGO_URL);
-mongoose
-  .connect(
-   url
-  )
-  .then(() => console.log("Conectado a base de datos MongoDb Atlas"))
-  .catch((error) => console.error("Error en conexcion :", error));
+
+connectDB(url);
