@@ -1,11 +1,12 @@
 import cartModel from "../models/carts.models.js";
-
+import productModel from "../models/products.models.js";
 const getAll = async () => {
   const carts = await cartModel.find();
   return carts;
 };
 
 const getById = async (id) => {
+  console.log(cartModel.findById(id));
   const cart = await cartModel.findById(id).populate("products.product");
   return cart;
 };

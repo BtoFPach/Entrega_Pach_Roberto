@@ -8,10 +8,18 @@ router.get("/", productsControllers.getAllProducts);
 
 router.get("/:pid", productsControllers.getProductById);
 
-router.delete("/:pid", authorization("admin"), productsControllers.deleteProduct);
+router.delete("/:pid",
+    // authorization("admin"), 
+     productsControllers.deleteProduct)
+;
 
-router.put("/:pid", authorization("admin"), productsControllers.updateProduct);
+router.put("/:pid",
+    //authorization("admin"),
+    productsControllers.updateProduct);
 
-router.post("/", authorization("admin"), checkProductData, productsControllers.createProduct);
+router.post("/",
+    //authorization("admin"),
+    checkProductData,
+    productsControllers.createProduct);
 
 export default router;

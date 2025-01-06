@@ -21,7 +21,7 @@ const update = async (id, data) => {
 };
 
 const deleteOne = async (id) => {
-  const product = await productModel.findByIdAndUpdate(id, { status: false }, { new: true });
+  const product = await productModel.findByIdAndDelete(id, { status: false }, { new: true });
   return product;
 };
 

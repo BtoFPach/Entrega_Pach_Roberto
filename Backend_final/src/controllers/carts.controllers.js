@@ -1,11 +1,37 @@
 import { request, response } from "express";
-import cartServices from "../services/carts.services.js";
-import ticketServices from "../services/ticket.services.js";
+import cartDao from "../dao/carts.dao.js";
+import productDao from "../dao/product.dao.js";
+import ticketDao from "../dao/ticket.dao.js";
+
+const getAllCarts = async (req, res) => {
+  try {
+    const carts = await cartDao.getAll();
+    res.status(200).json({ status: "success", carts });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "Erro", msg: "Error interno del servidor" });
+  }
+};
 
 const createCart = async (req, res) => {
   try {
-    const cart = await cartServices.createCart();
+    const cart = await cartDao.create();
     res.status(201).json({ status: "success", cart });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ status: "Erro", msg: "Error interno del servidor" });
+  }
+};
+
+const deleteCart = async (req, res) => {
+  try {
+    const { cid } = req.params;
+    const cart = await cartDao.deleteOne(cid);
+    if (!cart)
+      return res
+        .status(404)
+        .json({ status: "Error", msg: "Carrito no encontrado" });
+    res.status(200).json({ status: "success", cart });
   } catch (error) {
     console.log(error);
     res.status(500).json({ status: "Erro", msg: "Error interno del servidor" });
@@ -31,7 +57,7 @@ const addProductToCart = async (req, res) => {
   try {
     const { cid, pid } = req.params;
 
-    const cartUpdate = await cartServices.addProductToCart(cid, pid);
+    const cartUpdate = await cartDao.addProductToCart(cid, pid);
 
     res.status(200).json({ status: "success", payload: cartUpdate });
   } catch (error) {
@@ -42,9 +68,10 @@ const addProductToCart = async (req, res) => {
 
 const deleteProductToCart = async (req, res) => {
   try {
+    console.log("deleteProductToCart");
     const { cid, pid } = req.params;
 
-    const cartUpdate = await cartServices.deleteProductToCart(cid, pid);
+    const cartUpdate = await cartDao.deleteProductToCart(cid, pid);
 
     res.status(200).json({ status: "success", payload: cartUpdate });
   } catch (error) {
@@ -58,7 +85,7 @@ const updateQuantityProductInCart = async (req, res) => {
     const { cid, pid } = req.params;
     const { quantity } = req.body;
 
-    const cartUpdate = await cartServices.updateQuantityProductInCart(
+    const cartUpdate = await cartDao.updateQuantityProductInCart(
       cid,
       pid,
       Number(quantity)
@@ -74,7 +101,7 @@ const updateQuantityProductInCart = async (req, res) => {
 const clearProductsToCart = async (req, res) => {
   try {
     const { cid } = req.params;
-    const cart = await cartServices.clearProductsToCart(cid);
+    const cart = await cartDao.clearProductsToCart(cid);
     if (!cart)
       return res
         .status(404)
@@ -90,14 +117,14 @@ const clearProductsToCart = async (req, res) => {
 const purchaseCart = async (req = request, res = response) => {
   try {
     const { cid } = req.params;
-    const cart = await cartServices.getCartById(cid);
+    const cart = await cartDao.getById(cid);
     if (!cart)
       return res
         .status(404)
         .json({ status: "Error", msg: "Carrito no encontrado" });
 
-    const total = await cartServices.purchaseCart(cid);
-    const ticket = await ticketServices.createTicket(req.user.email, total);
+    const total = await cartDao.purchaseCart(cid);
+    const ticket = await ticketDao.createTicket(req.user.email, total);
 
     res.status(200).json({ status: "success", ticket });
   } catch (error) {
@@ -106,7 +133,9 @@ const purchaseCart = async (req = request, res = response) => {
   }
 };
 export default {
+  getAllCarts,
   createCart,
+  deleteCart,
   getCartById,
   addProductToCart,
   deleteProductToCart,

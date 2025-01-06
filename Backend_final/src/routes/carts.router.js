@@ -6,46 +6,47 @@ import { isUserCart } from "../middlewares/isUserCart.middleware.js";
 import { passportCall } from "../middlewares/passport.middleware.js";
 
 const router = Router();
-
+router.get("/", cartsControllers.getAllCarts);
 router.post("/", cartsControllers.createCart);
 
 router.get("/:cid", cartsControllers.getCartById);
 
 router.post(
   "/:cid/product/:pid",
-  passportCall("jwt"),
-  authorization("user"),
-  isUserCart,
-  checkProductAndCart,
+  //passportCall("jwt"),
+  //authorization("user"),
+  //isUserCart,
+  //checkProductAndCart,
   cartsControllers.addProductToCart
 );
 
 router.delete(
   "/:cid/product/:pid",
-  passportCall("jwt"),
-  authorization("user"),
-  checkProductAndCart,
+  //passportCall("jwt"),
+  //authorization("user"),
+  //checkProductAndCart,
   cartsControllers.deleteProductToCart
 );
 
 router.put(
   "/:cid/product/:pid",
-  passportCall("jwt"),
-  authorization("user"),
-  checkProductAndCart,
+  //passportCall("jwt"),
+  //authorization("user"),
+  //checkProductAndCart,
   cartsControllers.updateQuantityProductInCart
 );
 
 router.delete(
   "/:cid",
-  passportCall("jwt"),
-  authorization("user"),
-  cartsControllers.deleteProductToCart
+  //passportCall("jwt"),
+  //authorization("user"),
+  cartsControllers.deleteCart
 );
+
 router.get(
   "/:cid/purchase",
-  passportCall("jwt"),
-  authorization("user"),
+  //passportCall("jwt"),
+  //authorization("user"),
   cartsControllers.purchaseCart
 );
 
