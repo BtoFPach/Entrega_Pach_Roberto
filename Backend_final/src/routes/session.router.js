@@ -7,6 +7,7 @@ const router = Router();
 
 router.post("/register", passportCall("register"), async (req, res) => {
   try {
+    console.log(req.user);
     res.status(201).json({ status: "ok", msg: "User created" });
   } catch (error) {
     console.log(error);

@@ -1,5 +1,6 @@
 import { request, response } from "express";
-import productDao from "../dao/product.dao.js";
+import productServices from "../services/product.services.js";
+
 
 const getAllProducts = async (req = request, res = response) => {
     try {
@@ -16,17 +17,16 @@ const getAllProducts = async (req = request, res = response) => {
 
         // Si nos solicitan por categoría
         if (category) {
-            const products = await productDao.
-        getAll({ category }, options);
+            const products = await productServices.getAllProducts({ category }, options);
             return res.status(200).json({ status: "success", products });
         }
 
         if (status) {
-            const products = await productDao.getAll({ status }, options);
+            const products = await productServices.getAllProducts({ status }, options);
             return res.status(200).json({ status: "success", products });
         }
 
-        const products = await productDao.getAll({}, options);
+        const products = await productServices.getAllProducts({}, options);
         res.status(200).json({ status: "success", products });
     } catch (error) {
         console.log(error);
@@ -37,7 +37,7 @@ const getAllProducts = async (req = request, res = response) => {
 const getProductById = async (req = request, res = response) => {
     try {
         const { pid } = req.params;
-        const product = await productDao.getById(pid);
+        const product = await productServices.getProductById(pid);
         if (!product) return res.status(404).json({ status: "Error", msg: "Producto no encontrado" });
 
         res.status(200).json({ status: "success", product });
@@ -51,7 +51,7 @@ const updateProduct = async (req = request, res = response) => {
     try {
         const { pid } = req.params;
         const productData = req.body;
-        const product = await productDao.update(pid, productData);
+        const product = await productServices.updateProduct(pid, productData);
         if (!product) return res.status(404).json({ status: "Error", msg: "Producto no encontrado" });
 
         res.status(200).json({ status: "success", product });
@@ -64,7 +64,7 @@ const updateProduct = async (req = request, res = response) => {
 const createProduct = async (req = request, res = response) => {
     try {
         const productData = req.body;
-        const product = await productDao.create(productData);
+        const product = await productServices.createProduct(productData);
 
         res.status(201).json({ status: "success", product });
     } catch (error) {
@@ -76,7 +76,7 @@ const createProduct = async (req = request, res = response) => {
 const deleteProduct = async (req, res) => {
     try {
         const { pid } = req.params;
-        const product = await productDao.deleteOne(pid);
+        const product = await productServices.deleteProduct(pid);
         if (!product) return res.status(404).json({ status: "Error", msg: "Producto no encontrado" });
 
         res.status(200).json({ status: "success", msg: `El producto con el id ${pid} fue eliminado` });

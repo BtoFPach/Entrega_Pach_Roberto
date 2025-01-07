@@ -2,6 +2,7 @@ import { request, response } from "express";
 import passport from "passport";
 
 export const passportCall = (strategy) => {
+  console.log(strategy);
   return async (req = request, res = response, next) => {
     passport.authenticate(strategy, (err, user, info) => {
       if (err) return next(err);

@@ -5,6 +5,10 @@ const createCart = async () => {
     return await cartsDao.create();
 };
 
+const getAllCarts = async () => {
+    return await cartsDao.getAll();
+};
+
 const getCartById = async (cid) => {
     return await cartsDao.getById(cid);
 };
@@ -47,6 +51,7 @@ const purchaseCart = async (cid) => {
 
 export default {
     createCart,
+    getAllCarts,
     getCartById,
     addProductToCart,
     deleteProductToCart,
